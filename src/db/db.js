@@ -8,7 +8,7 @@ const pool = new Pool({
 	port: 5432
 })
 
-const fetch = async (SQL, ...params) {
+const fetch = async (SQL, ...params) => {
 	try {
 		console.log('connect db')
 		const client = await pool.connect()
@@ -27,3 +27,5 @@ const fetch = async (SQL, ...params) {
 		console.log('disconnect db...')
 	}
 }
+
+module.exports.fetch = fetch
