@@ -1,0 +1,204 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/poppins-v15-latin-regular.woff2') format('woff2'),
+       url('../fonts/poppins-v15-latin-regular.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/poppins-v15-latin-500.woff2') format('woff2'),
+       url('../fonts/poppins-v15-latin-500.woff') format('woff');
+}
+
+html, body {
+  margin: 0;
+  padding: 12px;
+  font-family: Poppins, Arial, sans-serif;
+  background-color: #f8f8f8;
+}
+
+/*card*/
+
+.card {
+  max-width: 451px;
+  margin: 0 auto;
+  margin-top: 40px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0px 12px 24px rgba(18, 38, 63, 0.05);
+}
+
+.card__top {
+  padding: 24px;
+  min-height: 64px;
+  background-color: rgba(85, 110, 230, 0.25);
+  background-image: url("./../img/girl-in-comp.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
+
+.card__heading {
+  margin: 0;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #556ee6;
+}
+
+.card__text {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 19px;
+  color: #556ee6;
+}
+
+/*card__body*/
+
+.card__body {
+  position: relative;
+  padding: 24px;
+  background-color: #ffffff;
+}
+
+.card__avatar {
+  position: absolute;
+  top: -25px;
+  display: block;
+  width: 72px;
+  height: 72px;
+  border: 3px solid #f8f8fb;
+  border-radius: 50%;
+}
+
+.card__form {
+  margin-top: 56px;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form__label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 19px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.form__input {
+  font-size: 13px;
+  line-height: 19px;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.form__input::placeholder {
+  color: #495057;
+}
+
+.form__input:focus {
+  border-color: rgba(85, 110, 230, 0.25);
+}
+
+.form__group-checkbox {
+  flex-direction: row;
+  align-items: center;
+}
+
+.form__input-checkbox {
+  margin: 0;
+}
+
+.form__label-checkbox {
+  margin-left: 8px;
+  margin-bottom: 0;
+}
+
+.form__submit {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #556ee6;
+  border-radius: 4px;
+  border: none;
+  font-size: 13px;
+  line-height: 19px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.card__forget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 19px;
+  text-align: center;
+  color: #74788d;
+}
+
+.card__forget::before {
+  content: "";
+  margin-right: 4px;
+  width: 19px;
+  height: 19px;
+  background-image: url("./../img/lock(1).png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/*signup*/
+
+.signup {
+  margin-top: 36px;
+}
+
+.signup, .copy {
+  font-size: 13px;
+  line-height: 19px;
+  color: #495057;
+  text-align: center;
+}
+
+.copy {
+  margin-top: 16px;
+}
+
+.signup__link {
+  color: #556ee6;
+  text-decoration: none;
+}
+
+/*For Retina Displays*/
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) { 
+  
+  .card__top {
+    background-image: url("./../img/girl-in-comp@2x.png");
+  }
+
+}
