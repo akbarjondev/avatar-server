@@ -9,9 +9,10 @@ const pool = new Pool({
 })
 
 const fetch = async (SQL, ...params) => {
+	const client = await pool.connect()
+	
 	try {
 		console.log('connect db')
-		const client = await pool.connect()
 		const { rows } = await client.query(SQL, params)
 		
 		return rows

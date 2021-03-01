@@ -52,13 +52,23 @@ app.post('/upload', upload.single('avatar'), async (req, res) => {
 
 	try {
 		const { filename } = req.file
-		const { username } = req.params
+		const { username } = req.body
 
-		// await fetch()
+		const data = await fetch(`
+			update 
+				users
+			set 
+				user_avatar = $1 
+			where 
+				user_username = $2
+			returning 
+				user_username
+			`, filename, username)
 
 		res.send({
 			status: 200,
-			message: 'Image was uploaded'
+			message: 'Image was uploaded',
+			data: data
 		})
 	} catch(e) {
 		console.log(e)
