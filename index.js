@@ -2,7 +2,9 @@ const express = require('express')
 const multer = require('multer')
 const path = require('path')
 const cors = require('cors')
+const http = require('http')
 const ejs = require('ejs')
+const fs = require('fs')
 
 // db
 const { fetch } = require('./src/db/db.js')
@@ -34,16 +36,60 @@ app.get('/', (req, res) => {
 	res.render('index.html')
 })
 
-app.get('/user/:username', (req, res) => {
-	// res.sendFile()
+app.get('/user/:username', async (req, res) => {
+	const { username } = req.params
 
-	res.send(req.params.username)
+	const [ selectedImage ] = await fetch(`
+		select 
+			user_avatar
+		from
+			users
+		where
+			user_username = $1
+	`, username)
+
+	if(selectedImage) {
+		res.sendFile(path.join(__dirname + '/src/files/' + selectedImage.user_avatar))
+	} else {
+		res.send({
+			status: 401,
+			message: 'No such user'
+		})
+	}
+
 })
 
-app.get('/profile/:username', (req, res) => {
-	// res.renderFile()
+app.get('/profile/:username', async (req, res) => {
+	
+	const { username } = req.params
 
-	res.send(req.params.username)
+	const [ selectedImage ] = await fetch(`
+		select 
+			user_avatar
+		from
+			users
+		where
+			user_username = $1
+	`, username)
+
+	if(selectedImage) {
+		fs.readFile((__dirname + '/src/files/' + selectedImage.user_avatar), (err, data) => {
+			
+			if(err) {
+				console.log('error: ' + err)
+			}
+
+			res.writeHead(200, { 'Content-Type': `image/jpeg` })
+			res.end(data)
+		})
+
+	} else {
+		res.send({
+			status: 401,
+			message: 'No such user'
+		})
+	}
+
 })
 
 
@@ -65,11 +111,19 @@ app.post('/upload', upload.single('avatar'), async (req, res) => {
 				user_username
 			`, filename, username)
 
-		res.send({
-			status: 200,
-			message: 'Image was uploaded',
-			data: data
-		})
+		if(data.length > 0) {
+			res.send({
+				status: 200,
+				message: 'Image was uploaded',
+				data: data
+			})
+		} else {
+			res.send({
+				status: 401,
+				message: 'User not found'
+			})
+		}
+
 	} catch(e) {
 		console.log(e)
 
