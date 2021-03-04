@@ -1,3 +1,4 @@
+const { compress } = require('compress-images/promise');
 const express = require('express')
 const multer = require('multer')
 const path = require('path')
@@ -39,7 +40,7 @@ app.get('/', (req, res) => {
 app.get('/user/:username', async (req, res) => {
 	const { username } = req.params
 
-	const [ selectedImage ] = await fetch(`
+	const [ selectedUser ] = await fetch(`
 		select 
 			user_avatar
 		from
@@ -48,8 +49,12 @@ app.get('/user/:username', async (req, res) => {
 			user_username = $1
 	`, username)
 
-	if(selectedImage) {
-		res.sendFile(path.join(__dirname + '/src/files/' + selectedImage.user_avatar))
+	if(selectedUser) {
+		if(selectedUser.user_avatar) {
+			res.sendFile(path.join(__dirname + '/src/files/' + selectedUser.user_avatar))
+		} else {
+			res.sendFile(path.join(__dirname + '/src/public/img/ant.jpg'))
+		}
 	} else {
 		res.send({
 			status: 401,
@@ -73,7 +78,7 @@ app.get('/profile/:username', async (req, res) => {
 	`, username)
 
 	if(selectedImage) {
-		fs.readFile((__dirname + '/src/files/' + selectedImage.user_avatar), (err, data) => {
+		fs.readFile((__dirname + '/src/compressed/img/' + selectedImage.user_avatar), (err, data) => {
 			
 			if(err) {
 				console.log('error: ' + err)
@@ -97,8 +102,34 @@ app.get('/profile/:username', async (req, res) => {
 app.post('/upload', upload.single('avatar'), async (req, res) => {
 
 	try {
+    const INPUT_path_to_your_images = 'src/files/**/*.{jpg,JPG,jpeg,JPEG,png}';
+    const OUTPUT_path = 'src/compressed/img/';
+
+    const processImages = async () => {
+        const result = await compress({
+            source: INPUT_path_to_your_images,
+            destination: OUTPUT_path,
+            enginesSetup: {
+                jpg: { engine: 'mozjpeg', command: ['-quality', '60']},
+                png: { engine: 'pngquant', command: ['--quality=20-50', '-o']},
+            }
+        });
+
+        const { statistics, errors } = result;
+        // statistics - all processed images list
+        // errors - all errros happened list
+    };
+
+    processImages();
+	} catch(e) {
+		console.log(e)
+	}
+
+	try {
 		const { filename } = req.file
 		const { username } = req.body
+
+		console.log(username, filename)
 
 		const data = await fetch(`
 			update 
